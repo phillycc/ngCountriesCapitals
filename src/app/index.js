@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('cncApp', ['ngAnimate', 'ngRoute'])
+angular.module('cncApp', ['geodataservice', 'ngAnimate', 'ngRoute'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -15,9 +15,10 @@ angular.module('cncApp', ['ngAnimate', 'ngRoute'])
         templateUrl: 'app/capital/capital.html',
         controller: 'CapitalCtrl as vm',
         resolve : {
-            neighbors: function($route, $location) {
-                var country = $route.current.params.country;
-                return country;
+            neighbors : function(geoNeighbors, $route) {
+                var country = $route.current.params.geonameId;
+                console.log(geoNeighbors(country));
+                //return geoNeighbors(country);
             }
         }
       })

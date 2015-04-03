@@ -1,37 +1,14 @@
-
-<div class="container">
-
-  <div ng-include="'components/navbar/navbar.html'"></div>
-  <h2>{{ vm.title }}</h2>
-  <div class="row">
-    <table class="table table-bordered table-striped table-responsive">
-       <thead>
-          <th>No.</th>
-          <th>Country Name</th>
-          <th>Code</th>
-          <th>Capital</th>
-          <th>Area (km<sup>2</sup>)</th>
-          <th>Population</th>
-          <th>Continent</th>
-      </thead>
-      <tbody>
-        <tr data-ng-repeat="country in vm.countryList" ng-click="vm.showCountry(country)">
-          <td>{{$index+1}}</td>
-          <td>{{country.countryName}}</td>
-          <td>{{country.countryCode}}</td>
-          <td>{{country.capital}}</td>
-          <td>{{country.areaInSqKm}}</td>
-          <td>{{country.population}}</td>
-          <td>{{country.continent}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <hr>
-
-  <div class="footer">
-    <p>With ♥ from <a href="https://twitter.com/Swiip">@Swiip</a></p>
-  </div>
-
+<div class="page-header">
+  <h2>{{ countryName }}</h2>
+</div>
+<div class="row">
+  <dl class="dl-horizontal">
+    <dt>Population of Country:</dt><dd>{{ population }}</dd>
+    <dt>Area:</dt><dd>{{ areaInSqKm }}</dd>
+    <dt>Time zone:</dt><dd></dd>
+    <dt>Neighbors:</dt><dd></dd>
+    <dt>Capital:</dt><dd>{{ capital }}</dd>
+    <dt>Population of Capital:</dt><dd></dd>
+    <dt>Currency:</dt><dd>{{ currencyCode }}</dd>
+  </dl>
 </div>

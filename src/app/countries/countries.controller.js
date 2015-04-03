@@ -5,22 +5,22 @@
         .module('cncApp')
         .controller('CountriesCtrl', CountriesCtrl);
 
-    CountriesCtrl.$inject = ['dataservice', '$location'];
+    CountriesCtrl.$inject = ['geodataservice', '$location'];
 
-    function CountriesCtrl(dataservice, $location) {
+    function CountriesCtrl(geodataservice, $location) {
         var vm = this;
-        vm.getCountries = getCountries;
+        vm.geoCountries = geoCountries;
         vm.showCountry = showCountry;
         vm.countryList = [];
         vm.title = 'Countries';
         activate();
 
         function activate() {
-            return getCountries();
+            return geoCountries();
         }
 
-        function getCountries() {
-            return dataservice.getCountries()
+        function geoCountries() {
+            return geodataservice.geoCountries()
                 .then(function(data){
                     for (var i = 0, len = data.geonames.length; i < len; i++) {
                         vm.countryList.push({
@@ -37,8 +37,6 @@
 
         function showCountry(countyObj){
           $location.path('/countries/' + countyObj.countryCode + '/capital');
-
-          console.log(countyObj);
         }
     }
 })();
