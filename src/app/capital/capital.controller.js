@@ -5,9 +5,9 @@
         .module('cncApp')
         .controller('CapitalCtrl', CapitalCtrl);
 
-    CapitalCtrl.$inject = ['geodataservice'];
+    CapitalCtrl.$inject = ['neighbors'];
 
-    function CapitalCtrl(geodataservice) {
-
+    function CapitalCtrl(neighbors) {
+        console.log(neighbors);
     }
 })();

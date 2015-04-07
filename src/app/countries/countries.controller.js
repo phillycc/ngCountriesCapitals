@@ -24,6 +24,7 @@
                 .then(function(data){
                     for (var i = 0, len = data.geonames.length; i < len; i++) {
                         vm.countryList.push({
+                          geonameId: data.geonames[i].geonameId,
                           countryName: data.geonames[i].countryName,
                           countryCode: data.geonames[i].countryCode,
                           capital: data.geonames[i].capital,
@@ -36,7 +37,7 @@
         }
 
         function showCountry(countyObj){
-          $location.path('/countries/' + countyObj.countryCode + '/capital');
+          $location.path('/countries/' + countyObj.geonameId + '/capital');
         }
     }
 })();
