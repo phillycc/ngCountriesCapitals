@@ -15,14 +15,16 @@ angular.module('cncApp', ['geoNamesAPI', 'ngAnimate', 'ngRoute'])
         templateUrl: 'app/capital/capital.html',
         controller: 'CapitalCtrl as vm',
         resolve : {
-            neighbors : function(geodataservice, $route) {
-                var geonameid = $route.current.params.geonameid;
-                //console.log(geodataservice.countries.geonames[countryIndex]);
-                geodataservice.geoNeighbors(geonameid).success(function(){
-                  
-                });
-                //return geoNeighbors(country);
-            }
+            neighbors : function(geodataservice, $route, $q) {
+              var geonameid = $route.current.params.geonameid;
+              var defer = $q.defer();
+
+              geodataservice.geoNeighbors(geonameid).then(function() {
+                return defer.resolve(geodataservice.neighboursList);
+              });
+
+              return defer.promise;
+          }
         }
       })
       .otherwise({
