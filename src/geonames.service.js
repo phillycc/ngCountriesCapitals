@@ -4,7 +4,8 @@
     angular
         .module('geoNamesAPI', [])
         .constant('GN_COUNTRIES',  'http://api.geonames.org/countryInfoJSON?username=davelmer')
-        .constant('GN_NEIGHBOURS', 'http://api.geonames.org/neighboursJSON?geonameId={{ APIcountryid }}&username=davelmer')
+        .constant('GN_NEIGHBOURS', 'http://api.geonames.org/neighboursJSON?geonameId={{ geonameId }}&username=davelmer')
+        .constant('GN_FLAG', 'http://www.geonames.org/img/country/250/{{ geoCountryCode }}.png')
         .factory('geodataservice', geodataservice);
 
     geodataservice.$inject = ['$http', '$q', '$interpolate', 'GN_COUNTRIES', 'GN_NEIGHBOURS'];
@@ -18,7 +19,8 @@
             geoFlag: geoFlag,
             geoMap: geoMap,
             neighboursList: [],
-            countries: []
+            countries: [],
+            flag: []
         };
 
         return service;
@@ -43,7 +45,7 @@
         function geoNeighbors(countryid){
 
           var neighboursURL = $interpolate(GN_NEIGHBOURS);
-          neighboursURL=neighboursURL({ APIcountryid : countryid });
+          neighboursURL=neighboursURL({ geonameId : countryid });
 
           return $http.get(neighboursURL)
               .then(success)
@@ -55,9 +57,6 @@
 
           function fail(error) {
               var msg = 'query for neighbours failed. ' + error.data.description;
-              //console.log(error.data.description);
-
-              //logger.error(msg);
               return $q.reject(msg);
           }
         }
@@ -66,8 +65,22 @@
 
         }
 
-        function geoFlag(){
+        function geoFlag(countryCode){
+            var flagURL = $interpolate(GN_FLAG);
+            flagURL=flagURL({ geoCountryCode : countryCode });
 
+            return $http.get(flagURL)
+                .then(success)
+                .catch(fail);
+
+            function success(response) {
+                service.flag = response.data;
+            }
+
+            function fail(error) {
+                var msg = 'query for flag failed. ' + error.data.description;
+                return $q.reject(msg);
+            }
         }
 
         function geoMap(){

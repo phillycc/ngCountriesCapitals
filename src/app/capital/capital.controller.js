@@ -8,6 +8,11 @@
     CapitalCtrl.$inject = ['neighbors'];
 
     function CapitalCtrl(neighbors) {
-        console.log(neighbors);
+
+      //neighbors
+      for (var i = 0, totalNeighbors = neighbors.totalResultsCount; i < totalNeighbors; i++){
+        console.log(neighbors.geonames[i].countryName);
+      }
+
     }
 })();

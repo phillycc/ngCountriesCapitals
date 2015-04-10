@@ -17,14 +17,25 @@ angular.module('cncApp', ['geoNamesAPI', 'ngAnimate', 'ngRoute'])
         resolve : {
             neighbors : function(geodataservice, $route, $q) {
               var geonameid = $route.current.params.geonameid;
-              var defer = $q.defer();
+              var deferNeighbor = $q.defer();
 
               geodataservice.geoNeighbors(geonameid).then(function() {
-                return defer.resolve(geodataservice.neighboursList);
+                return deferNeighbor.resolve(geodataservice.neighboursList);
               });
 
-              return defer.promise;
-          }
+              return deferNeighbor.promise;
+            }
+            /*,
+            flag : function(geodataservice, $route, $q) {
+              var countryCode = $route.current.params.countryCode;
+              var deferFlag = $q.defer();
+
+              geodataservice.geoNeighbors(countryCode).then(function() {
+                return deferFlag.resolve(geodataservice.geoflag);
+              });
+
+              return deferFlag.promise;
+            }*/
         }
       })
       .otherwise({
