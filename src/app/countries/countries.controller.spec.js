@@ -3,7 +3,7 @@
 describe('Countries List', function(){
   beforeEach(module('cncApp'));
   var ctrl, data;
-  beforeEach(inject(function($controller) {
+  beforeEach(inject(function($controller, $location) {
       ctrl = $controller('CountriesCtrl', {
           geodataservice : { geoCountries : function(){
             return {

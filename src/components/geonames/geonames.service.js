@@ -31,6 +31,7 @@
                 .catch(fail);
 
             function success(response) {
+                console.log(response.data);
                 service.countries = response.data;
                 return response.data;
             }
