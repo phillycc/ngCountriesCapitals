@@ -1,19 +1,45 @@
 'use strict';
 
-describe('Unit Tests: geoNames Dataservice', function () {
-  beforeEach(module('geoNamesAPI.geodataservice'));
-  var PostsSvc;
-
-  beforeEach(inject(function(_PostsSvc_) {
-    PostsSvc = _PostsSvc_;
-  }));
-
-  describe('geoCountries', function() {
-    it('exists', function() {
-      expect(PostsSvc.geoCountries).to.exist;
+describe("geoNames service", function() {
+    beforeEach(function(){
+        module('geoNamesAPI');
     });
-  });
+
+    var service, httpBackend, geonames;
+
+    beforeEach(inject(function($injector){
+        service = $injector.get('geodataservice');
+        httpBackend = $injector.get('$httpBackend');
+    }));
+
+    it('should return a list of countries', function(){
+        httpBackend.when('GET', 'http://api.geonames.org/countryInfoJSON?username=davelmer').respond(
+          { geonames:[
+              'areaInSqKm':'468.0',
+              'capital':'Andorra la Vella',
+              'continent':'EU',
+              'continentName':'Europe',
+              'countryCode':'AD',
+              'countryName':'Andorra',
+              'currencyCode':'EUR',
+              'east':'1.7865427778319827',
+              'fipsCode':'AN',
+              'geonameId':'3041565',
+              'isoAlpha3':'AND',
+              'isoNumeric':'020',
+              'languages':'ca',
+              'north':'42.65604389629997',
+              'population':'84000',
+              'south':'42.42849259876837',
+              'west':'1.4071867141112762'
+        ]);
+
+        service.geoCountries.then(function(response){
+          expect(response.data.length).toBe(1);
+        })
+    });
 });
+
 
 /*describe('Unit Tests: geoNames Dataservice', function() {
     beforeEach(module('geoNamesAPI.geodataservice'));
@@ -25,23 +51,23 @@ describe('Unit Tests: geoNames Dataservice', function () {
       httpMock.when('GET', 'http://api.geonames.org/countryInfoJSON?username=davelmer').respond(
         geonames=[];
         geonames[0]={};
-        geonames[0].areaInSqKm='468.0';
-        geonames[0].capital='Andorra la Vella';
-        geonames[0].continent='EU';
-        geonames[0].continentName='Europe';
-        geonames[0].countryCode='AD';
-        geonames[0].countryName='Andorra';
-        geonames[0].currencyCode='EUR';
-        geonames[0].east='1.7865427778319827';
-        geonames[0].fipsCode='AN';
-        geonames[0].geonameId='3041565';
-        geonames[0].isoAlpha3='AND';
-        geonames[0].isoNumeric='020';
-        geonames[0].languages='ca';
-        geonames[0].north='42.65604389629997';
-        geonames[0].population='84000';
-        geonames[0].south='42.42849259876837';
-        geonames[0].west='1.4071867141112762';
+        'areaInSqKm='468.0';
+        'capital='Andorra la Vella';
+        'continent='EU';
+        'continentName='Europe';
+        'countryCode='AD';
+        'countryName='Andorra';
+        'currencyCode='EUR';
+        'east='1.7865427778319827';
+        'fipsCode='AN';
+        'geonameId='3041565';
+        'isoAlpha3='AND';
+        'isoNumeric='020';
+        'languages='ca';
+        'north='42.65604389629997';
+        'population='84000';
+        'south='42.42849259876837';
+        'west='1.4071867141112762';
       );
 
       geoFactory = geoCountriesService;

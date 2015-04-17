@@ -14,13 +14,6 @@
 
         var service = {
             geoCountries: geoCountries,
-            geoNeighbors: geoNeighbors,
-            geoCapitalSize: geoCapitalSize,
-            geoFlag: geoFlag,
-            geoMap: geoMap,
-            neighboursList: [],
-            countries: [],
-            flag: []
         };
 
         return service;
@@ -31,7 +24,6 @@
                 .catch(fail);
 
             function success(response) {
-                console.log(response.data);
                 service.countries = response.data;
                 return response.data;
             }
@@ -41,51 +33,6 @@
                 //logger.error(msg);
                 return $q.reject(msg);
             }
-        }
-
-        function geoNeighbors(countryid){
-
-          var neighboursURL = $interpolate(GN_NEIGHBOURS);
-          neighboursURL=neighboursURL({ geonameId : countryid });
-
-          return $http.get(neighboursURL)
-              .then(success)
-              .catch(fail);
-
-          function success(response) {
-              service.neighboursList = response.data;
-          }
-
-          function fail(error) {
-              var msg = 'query for neighbours failed. ' + error.data.description;
-              return $q.reject(msg);
-          }
-        }
-
-        function geoCapitalSize(){
-
-        }
-
-        function geoFlag(countryCode){
-            var flagURL = $interpolate(GN_FLAG);
-            flagURL=flagURL({ geoCountryCode : countryCode });
-
-            return $http.get(flagURL)
-                .then(success)
-                .catch(fail);
-
-            function success(response) {
-                service.flag = response.data;
-            }
-
-            function fail(error) {
-                var msg = 'query for flag failed. ' + error.data.description;
-                return $q.reject(msg);
-            }
-        }
-
-        function geoMap(){
-
         }
     }
 })();
