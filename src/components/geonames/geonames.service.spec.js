@@ -7,36 +7,46 @@ describe("geoNames service", function() {
 
     var service, httpBackend, geonames;
 
-    beforeEach(inject(function($injector){
+    beforeEach(inject(function($injector, _geodataservice_){
         service = $injector.get('geodataservice');
         httpBackend = $injector.get('$httpBackend');
     }));
 
     it('should return a list of countries', function(){
-        httpBackend.when('GET', 'http://api.geonames.org/countryInfoJSON?username=davelmer').respond(
-          { geonames:[
-              'areaInSqKm':'468.0',
-              'capital':'Andorra la Vella',
-              'continent':'EU',
-              'continentName':'Europe',
-              'countryCode':'AD',
-              'countryName':'Andorra',
-              'currencyCode':'EUR',
-              'east':'1.7865427778319827',
-              'fipsCode':'AN',
-              'geonameId':'3041565',
-              'isoAlpha3':'AND',
-              'isoNumeric':'020',
-              'languages':'ca',
-              'north':'42.65604389629997',
-              'population':'84000',
-              'south':'42.42849259876837',
-              'west':'1.4071867141112762'
-        ]);
+      var responseData = {
+        data:{
+            'areaInSqKm':'468.0',
+            'capital':'Andorra la Vella',
+            'continent':'EU',
+            'continentName':'Europe',
+            'countryCode':'AD',
+            'countryName':'Andorra',
+            'currencyCode':'EUR',
+            'east':'1.7865427778319827',
+            'fipsCode':'AN',
+            'geonameId':'3041565',
+            'isoAlpha3':'AND',
+            'isoNumeric':'020',
+            'languages':'ca',
+            'north':'42.65604389629997',
+            'population':'84000',
+            'south':'42.42849259876837',
+            'west':'1.4071867141112762'
+        }
+      };
+      httpBackend.when('GET', 'http://api.geonames.org/countryInfoJSON?username=davelmer').respond(responseData);
+      service.geoCountries();
+      httpBackend.flush();
+      expect(service.countries).toEqual(responseData);
+    });
 
-        service.geoCountries.then(function(response){
-          expect(response.data.length).toBe(1);
-        })
+    it('should fail gracefully', function(){
+      var responseData = {
+        data: { description: 'my description' }
+      };
+      httpBackend.when('GET', 'http://api.geonames.org/countryInfoJSON?username=davelmer').respond(500, responseData);
+      service.geoCountries();
+      httpBackend.flush();
     });
 });
 
